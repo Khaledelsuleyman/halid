@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - بيتزا ماما</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-pizza-slice"></i>
+                <h1>لوحة التحكم</h1>
+                <p>بيتزا ماما</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="كلمة المرور" required>
+                </div>
+                <button type="submit" class="login-btn">دخول</button>
+                <div id="error-message" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="admin-dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-pizza-slice"></i>
+                    <span>لوحة التحكم - بيتزا ماما</span>
+                </div>
+                <div class="header-actions">
+                    <span class="welcome-text">مرحباً، المدير</span>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        خروج
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>لوحة المعلومات</span>
+                    </li>
+                    <li class="nav-item" data-section="products">
+                        <i class="fas fa-box"></i>
+                        <span>إدارة المنتجات</span>
+                    </li>
+                    <li class="nav-item" data-section="orders">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>الطلبات</span>
+                    </li>
+                    <li class="nav-item" data-section="analytics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>التقارير</span>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2>لوحة المعلومات</h2>
+                    <p>نظرة عامة على أداء المطعم</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-orders">156</h3>
+                            <p>إجمالي الطلبات</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-revenue">12,450</h3>
+                            <p>إجمالي المبيعات (ريال)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-pizza-slice"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-products">15</h3>
+                            <p>عدد المنتجات</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-customers">89</h3>
+                            <p>عدد العملاء</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-orders">
+                    <h3>الطلبات الأخيرة</h3>
+                    <div class="orders-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>العميل</th>
+                                    <th>المنتجات</th>
+                                    <th>المبلغ</th>
+                                    <th>الحالة</th>
+                                    <th>الوقت</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-table">
+                                <tr>
+                                    <td>#001</td>
+                                    <td>أحمد محمد</td>
+                                    <td>بيتزا مارجريتا × 2</td>
+                                    <td>90 ريال</td>
+                                    <td><span class="status delivered">تم التوصيل</span></td>
+                                    <td>منذ 5 دقائق</td>
+                                </tr>
+                                <tr>
+                                    <td>#002</td>
+                                    <td>فاطمة علي</td>
+                                    <td>باستا كاربونارا</td>
+                                    <td>40 ريال</td>
+                                    <td><span class="status preparing">قيد التحضير</span></td>
+                                    <td>منذ 15 دقيقة</td>
+                                </tr>
+                                <tr>
+                                    <td>#003</td>
+                                    <td>محمد سالم</td>
+                                    <td>بيتزا بيبروني، عصير برتقال</td>
+                                    <td>70 ريال</td>
+                                    <td><span class="status pending">جديد</span></td>
+                                    <td>منذ 2 دقيقة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products-section" class="content-section">
+                <div class="section-header">
+                    <h2>إدارة المنتجات</h2>
+                    <button class="add-btn" onclick="showAddProductModal()">
+                        <i class="fas fa-plus"></i>
+                        إضافة منتج جديد
+                    </button>
+                </div>
+                
+                <div class="products-grid" id="products-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders-section" class="content-section">
+                <div class="section-header">
+                    <h2>إدارة الطلبات</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">الكل</button>
+                        <button class="filter-btn" data-filter="pending">جديد</button>
+                        <button class="filter-btn" data-filter="preparing">قيد التحضير</button>
+                        <button class="filter-btn" data-filter="delivered">تم التوصيل</button>
+                    </div>
+                </div>
+                
+                <div class="orders-list" id="orders-list">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics-section" class="content-section">
+                <div class="section-header">
+                    <h2>التقارير والإحصائيات</h2>
+                </div>
+                
+                <div class="analytics-grid">
+                    <div class="chart-container">
+                        <h3>مبيعات الأسبوع</h3>
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                            <p>الرسم البياني سيتم تطويره لاحقاً</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>أكثر المنتجات مبيعاً</h3>
+                        <div class="top-products">
+                            <div class="product-stat">
+                                <span>بيتزا مارجريتا</span>
+                                <span>45 طلب</span>
+                            </div>
+                            <div class="product-stat">
+                                <span>بيتزا بيبروني</span>
+                                <span>38 طلب</span>
+                            </div>
+                            <div class="product-stat">
+                                <span>باستا كاربونارا</span>
+                                <span>32 طلب</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="add-product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة منتج جديد</h3>
+                <span class="close" onclick="closeAddProductModal()">&times;</span>
+            </div>
+            <form id="add-product-form" class="product-form">
+                <div class="form-group">
+                    <label>اسم المنتج</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="product-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>السعر (ريال)</label>
+                    <input type="number" id="product-price" required>
+                </div>
+                <div class="form-group">
+                    <label>الفئة</label>
+                    <select id="product-category" required>
+                        <option value="pizza">بيتزا</option>
+                        <option value="pasta">باستا</option>
+                        <option value="drinks">مشروبات</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>رابط الصورة</label>
+                    <input type="url" id="product-image" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeAddProductModal()">إلغاء</button>
+                    <button type="submit">إضافة المنتج</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>

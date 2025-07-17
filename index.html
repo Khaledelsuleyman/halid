@@ -19,16 +19,22 @@
                 </div>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="#home" class="nav-link">الرئيسية</a>
+                        <a href="#home" class="nav-link" data-key="nav-home">الرئيسية</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#menu" class="nav-link">القائمة</a>
+                        <a href="#menu" class="nav-link" data-key="nav-menu">القائمة</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#about" class="nav-link">من نحن</a>
+                        <a href="#about" class="nav-link" data-key="nav-about">من نحن</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#contact" class="nav-link">اتصل بنا</a>
+                        <a href="#contact" class="nav-link" data-key="nav-contact">اتصل بنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="lang-toggle" onclick="toggleLanguage()">
+                            <i class="fas fa-globe"></i>
+                            <span id="lang-text">EN</span>
+                        </button>
                     </li>
                 </ul>
                 <div class="nav-toggle" id="mobile-menu">
@@ -42,10 +48,17 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+                <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+        </div>
         <div class="hero-content">
-            <h1 class="hero-title">أفضل بيتزا في المدينة</h1>
-            <p class="hero-subtitle">طعم أصيل وجودة عالية مع توصيل سريع</p>
-            <button class="cta-button" onclick="scrollToMenu()">اطلب الآن</button>
+            <h1 class="hero-title" data-key="hero-title">أفضل بيتزا في المدينة</h1>
+            <p class="hero-subtitle" data-key="hero-subtitle">طعم أصيل وجودة عالية مع توصيل سريع</p>
+            <button class="cta-button" onclick="scrollToMenu()" data-key="cta-button">اطلب الآن</button>
         </div>
         <div class="hero-image">
             <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="بيتزا لذيذة">
@@ -55,12 +68,12 @@
     <!-- Menu Section -->
     <section id="menu" class="menu">
         <div class="container">
-            <h2 class="section-title">قائمة الطعام</h2>
+            <h2 class="section-title" data-key="menu-title">قائمة الطعام</h2>
             <div class="menu-categories">
-                <button class="category-btn active" data-category="all">الكل</button>
-                <button class="category-btn" data-category="pizza">بيتزا</button>
-                <button class="category-btn" data-category="pasta">باستا</button>
-                <button class="category-btn" data-category="drinks">مشروبات</button>
+                <button class="category-btn active" data-category="all" data-key="category-all">الكل</button>
+                <button class="category-btn" data-category="pizza" data-key="category-pizza">بيتزا</button>
+                <button class="category-btn" data-category="pasta" data-key="category-pasta">باستا</button>
+                <button class="category-btn" data-category="drinks" data-key="category-drinks">مشروبات</button>
             </div>
             <div class="menu-grid" id="menu-grid">
                 <!-- Menu items will be populated by JavaScript -->
@@ -73,8 +86,8 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2 class="section-title">من نحن</h2>
-                    <p>نحن في بيتزا ماما نقدم أفضل أنواع البيتزا المصنوعة من أجود المكونات الطازجة. تأسسنا عام 2010 ومنذ ذلك الحين ونحن نسعى لتقديم تجربة طعام لا تُنسى لعملائنا الكرام.</p>
+                    <h2 class="section-title" data-key="about-title">من نحن</h2>
+                    <p data-key="about-description">نحن في بيتزا ماما نقدم أفضل أنواع البيتزا المصنوعة من أجود المكونات الطازجة. تأسسنا عام 2010 ومنذ ذلك الحين ونحن نسعى لتقديم تجربة طعام لا تُنسى لعملائنا الكرام.</p>
                     <div class="features">
                         <div class="feature">
                             <i class="fas fa-clock"></i>
@@ -109,22 +122,29 @@
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <div>
-                            <h3>الهاتف</h3>
+                            <h3 data-key="contact-phone">الهاتف</h3>
                             <p>+966 12 345 6789</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>البريد الإلكتروني</h3>
+                            <p>halid@pizzamama.com</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
-                            <h3>العنوان</h3>
-                            <p>شارع الملك فهد، الرياض، المملكة العربية السعودية</p>
+                            <h3 data-key="contact-address">العنوان</h3>
+                            <p data-key="contact-address-text">شارع الملك فهد، الرياض، المملكة العربية السعودية</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <h3>ساعات العمل</h3>
-                            <p>يومياً من 11:00 ص إلى 12:00 م</p>
+                            <h3 data-key="contact-hours">ساعات العمل</h3>
+                            <p data-key="contact-hours-text">يومياً من 11:00 ص إلى 12:00 م</p>
                         </div>
                     </div>
                 </div>
@@ -154,6 +174,31 @@
             </div>
             <button class="checkout-btn" onclick="checkout()">إتمام الطلب</button>
         </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <div class="ai-assistant" id="ai-assistant">
+        <div class="ai-header">
+            <div class="ai-title">
+                <i class="fas fa-robot"></i>
+                <span data-key="ai-assistant">المساعد الذكي</span>
+            </div>
+            <button class="ai-close" onclick="toggleAI()">&times;</button>
+        </div>
+        <div class="ai-messages" id="ai-messages">
+            <div class="ai-message bot-message">
+                <div class="message-content" data-key="ai-welcome">مرحباً! أنا مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟</div>
+            </div>
+        </div>
+        <div class="ai-input-container">
+            <input type="text" id="ai-input" data-key="ai-placeholder" placeholder="اسأل عن أي شيء...">
+            <button onclick="sendAIMessage()" data-key="ai-send">إرسال</button>
+        </div>
+    </div>
+
+    <!-- AI Toggle Button -->
+    <div class="ai-toggle" onclick="toggleAI()">
+        <i class="fas fa-robot"></i>
     </div>
 
     <!-- Cart Button -->
@@ -192,11 +237,17 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 بيتزا ماما. جميع الحقوق محفوظة.</p>
+                <p>&copy; 2024 بيتزا ماما. <span data-key="footer-rights">جميع الحقوق محفوظة.</span></p>
+                <a href="admin.html" class="admin-link">
+                    <i class="fas fa-cog"></i>
+                    لوحة التحكم
+                </a>
             </div>
         </div>
     </footer>
 
+    <script src="translations.js"></script>
+    <script src="ai-assistant.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

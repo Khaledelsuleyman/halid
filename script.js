@@ -63,6 +63,62 @@ const menuItems = [
         price: 8,
         category: "drinks",
         image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 9,
+        name: "عصير تفاح طازج",
+        description: "عصير تفاح طبيعي بدون إضافات",
+        price: 12,
+        category: "drinks",
+        image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 10,
+        name: "عصير مانجو",
+        description: "عصير مانجو استوائي لذيذ",
+        price: 18,
+        category: "drinks",
+        image: "https://images.unsplash.com/photo-1546173159-315724a31696?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 11,
+        name: "موهيتو بدون كحول",
+        description: "مشروب منعش بالنعناع والليمون",
+        price: 20,
+        category: "drinks",
+        image: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 12,
+        name: "شاي مثلج",
+        description: "شاي مثلج بالليمون والنعناع",
+        price: 10,
+        category: "drinks",
+        image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 13,
+        name: "قهوة مثلجة",
+        description: "قهوة مثلجة بالكراميل",
+        price: 16,
+        category: "drinks",
+        image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 14,
+        name: "عصير فراولة",
+        description: "عصير فراولة طازج ولذيذ",
+        price: 17,
+        category: "drinks",
+        image: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 15,
+        name: "ماء معدني",
+        description: "ماء معدني طبيعي",
+        price: 5,
+        category: "drinks",
+        image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
     }
 ];
 
@@ -83,22 +139,30 @@ document.addEventListener('DOMContentLoaded', function() {
     displayMenuItems(menuItems);
     setupEventListeners();
     updateCartUI();
+    initializeLazyLoading();
+    initializeAnimations();
 });
 
 // Display menu items
 function displayMenuItems(items) {
     menuGrid.innerHTML = '';
     items.forEach(item => {
+        const currency = translations[currentLanguage]['price-currency'] || 'ريال';
+        const addToCartText = translations[currentLanguage]['add-to-cart'] || 'إضافة للسلة';
+
         const menuItemHTML = `
             <div class="menu-item" data-category="${item.category}">
-                <img src="${item.image}" alt="${item.name}">
+                <div class="image-container">
+                    <img class="lazy" data-src="${item.image}" alt="${item.name}">
+                    <div class="image-placeholder"></div>
+                </div>
                 <div class="menu-item-content">
                     <h3>${item.name}</h3>
                     <p>${item.description}</p>
                     <div class="menu-item-footer">
-                        <span class="price">${item.price} ريال</span>
+                        <span class="price">${item.price} ${currency}</span>
                         <button class="add-to-cart" onclick="addToCart(${item.id})">
-                            إضافة للسلة
+                            ${addToCartText}
                         </button>
                     </div>
                 </div>
@@ -106,6 +170,9 @@ function displayMenuItems(items) {
         `;
         menuGrid.innerHTML += menuItemHTML;
     });
+
+    // Initialize lazy loading for new images
+    initializeLazyLoading();
 }
 
 // Filter menu items by category
@@ -308,17 +375,21 @@ function showAddToCartAnimation() {
     }, 200);
 }
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
+// Navbar scroll effect with debouncing
+const handleScroll = debounce(() => {
     const header = document.querySelector('.header');
     if (window.scrollY > 100) {
         header.style.background = 'rgba(255, 255, 255, 0.95)';
-        header.style.backdropFilter = 'blur(10px)';
+        header.style.backdropFilter = 'blur(20px)';
+        header.classList.add('scrolled');
     } else {
-        header.style.background = '#fff';
-        header.style.backdropFilter = 'none';
+        header.style.background = 'rgba(255, 255, 255, 0.95)';
+        header.style.backdropFilter = 'blur(20px)';
+        header.classList.remove('scrolled');
     }
-});
+}, 10);
+
+window.addEventListener('scroll', handleScroll);
 
 // Loading animation for images
 document.addEventListener('DOMContentLoaded', function() {
@@ -347,8 +418,45 @@ const observer = new IntersectionObserver(function(entries) {
     });
 }, observerOptions);
 
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize lazy loading
+function initializeLazyLoading() {
+    const lazyImages = document.querySelectorAll('img.lazy');
+
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const placeholder = img.parentElement.querySelector('.image-placeholder');
+
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    img.classList.add('loaded');
+
+                    img.onload = () => {
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+                    };
+
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for older browsers
+        lazyImages.forEach(img => {
+            img.src = img.dataset.src;
+            img.classList.remove('lazy');
+            img.classList.add('loaded');
+        });
+    }
+}
+
+// Initialize animations
+function initializeAnimations() {
     const animatedElements = document.querySelectorAll('.menu-item, .feature, .contact-item');
     animatedElements.forEach(el => {
         el.style.opacity = '0';
@@ -356,4 +464,17 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
-});
+}
+
+// Performance optimization: Debounce scroll events
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
